@@ -26,3 +26,25 @@ export async function generatePetStory(pet: Pet): Promise<string> {
     throw new Error('Failed to generate pet story.');
   }
 }
+
+export async function generateAboutUsImage(): Promise<string> {
+  const prompt = `A heartwarming, photorealistic image of a diverse group of smiling volunteers in Argentina (various ages, ethnicities) caring for happy dogs and cats at a sunny, clean animal shelter. The 'Patitas Argentinas' logo is subtly visible on their T-shirts. The style should be warm, inviting, and professional.`;
+  
+  try {
+    const response = await ai.models.generateImages({
+      model: 'imagen-4.0-generate-001',
+      prompt: prompt,
+      config: {
+        numberOfImages: 1,
+        outputMimeType: 'image/jpeg',
+        aspectRatio: '4:3',
+      },
+    });
+
+    const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
+    return `data:image/jpeg;base64,${base64ImageBytes}`;
+  } catch (error) {
+    console.error('Error generating about us image with Gemini API:', error);
+    throw new Error('Failed to generate about us image.');
+  }
+}

@@ -55,7 +55,7 @@ export const PetDetailModal: React.FC<PetDetailModalProps> = ({ pet, onClose, is
             </h3>
             {isStoryLoading ? (
               <div className="flex items-center justify-center h-24">
-                <LoadingSpinner />
+                <LoadingSpinner message="Creating a unique story..." />
               </div>
             ) : (
               <p className="text-stone-600 italic bg-orange-50 p-4 rounded-lg border-l-4 border-orange-200">
