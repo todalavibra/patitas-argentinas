@@ -27,7 +27,10 @@ export default function App() {
         setSelectedPet(prev => prev ? { ...prev, story } : null);
       } catch (error) {
         console.error("Failed to generate pet story:", error);
-        setSelectedPet(prev => prev ? { ...prev, story: "Could not generate a story at this time, but my heart is full of love!" } : null);
+        const errorStory = "Could not generate a story at this time, but my heart is full of love!";
+        const updatedPets = pets.map(p => p.id === pet.id ? { ...p, story: errorStory } : p);
+        setPets(updatedPets);
+        setSelectedPet(prev => prev ? { ...prev, story: errorStory } : null);
       } finally {
         setIsStoryLoading(false);
       }
