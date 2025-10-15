@@ -1,41 +1,26 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { Header } from './components/Header';
 import { AboutUs } from './components/AboutUs';
 import { PetGrid } from './components/PetGrid';
 import { PetDetailModal } from './components/PetDetailModal';
-import { generatePetStory } from './services/geminiService';
 import { INITIAL_PETS } from './constants';
 import type { Pet, PetType } from './types';
+import { usePetStory } from './hooks/usePetStory';
 
 export default function App() {
   const [pets, setPets] = useState<Pet[]>(INITIAL_PETS);
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [filter, setFilter] = useState<PetType | 'all'>('all');
-  const [isStoryLoading, setIsStoryLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isStoryLoading, generateStory } = usePetStory(pets, setPets);
 
   const handleSelectPet = useCallback(async (pet: Pet) => {
-    setSelectedPet(pet);
     setIsModalOpen(true);
-    if (!pet.story) {
-      setIsStoryLoading(true);
-      try {
-        const story = await generatePetStory(pet);
-        const updatedPets = pets.map(p => p.id === pet.id ? { ...p, story } : p);
-        setPets(updatedPets);
-        setSelectedPet(prev => prev ? { ...prev, story } : null);
-      } catch (error) {
-        console.error("Failed to generate pet story:", error);
-        const errorStory = "Could not generate a story at this time, but my heart is full of love!";
-        const updatedPets = pets.map(p => p.id === pet.id ? { ...p, story: errorStory } : p);
-        setPets(updatedPets);
-        setSelectedPet(prev => prev ? { ...prev, story: errorStory } : null);
-      } finally {
-        setIsStoryLoading(false);
-      }
-    }
-  }, [pets]);
+    const petWithStory = await generateStory(pet);
+    setSelectedPet(petWithStory);
+  }, [generateStory]);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -51,6 +36,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-800">
+      <Toaster />
       <Header activeFilter={filter} onFilterChange={setFilter} />
       <main>
         <div className="container mx-auto px-4 pt-8 pb-4 text-center">

@@ -10,9 +10,10 @@
     "test": "vitest"
   },
   "dependencies": {
-    "react": "^19.1.1",
     "@google/genai": "^1.20.0",
-    "react-dom": "^19.1.1"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hot-toast": "^2.6.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
@@ -22,6 +23,7 @@
     "jsdom": "^24.1.1",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
+    "vite-plugin-image-optimizer": "^2.0.2",
     "vitest": "^2.0.5"
   }
 }
