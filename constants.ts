@@ -123,3 +123,5 @@ export const INITIAL_PETS: Pet[] = [
     imageUrl: 'https://picsum.photos/seed/olivia/600/600',
   },
 ];
+
+export const ERROR_STORY = "Could not generate a story at this time, but my heart is full of love!";
